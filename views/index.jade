@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    - var l = allImagesX.length;
+    - var c = 0;
+
+    while c < l
+        - var allImages = allImagesX[c];
+        - c++
+        - var x = 7;
+        - var cnt = 0;
+        h1= allImages.name +", "+ allImages.state +", "+ allImages.country
+        while cnt < x & cnt < allImages.length
+
+            img(src= allImages[cnt].images.medium.url, title= allImages[cnt].caption, height= "187", width= "250")
+            - cnt++
+
+    h3 Mark multiple cities or towns to see photos of the best attractions. Click: mark place, Right click: submit,  zooming and locating as regular Google Maps (67% browser zooming is recommended)

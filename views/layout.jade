@@ -1,0 +1,77 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    style(type='text/css').
+      html, body, #map-canvas { height: 95%; margin: 0; padding-left: 2%; padding-right: 2%}
+    script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA4BtkJpdvocSQKKPTOfoBGbVUiB7vrOMA')
+
+    script(type='text/javascript').
+      function initialize() {
+
+      // all mouse clicks
+      var allPositions = {};
+      var cnt = 0;
+      var mapOptions = {
+      center: { lat: 40.8989013, lng: -79.9447231},
+      zoom: 4
+      };
+      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+
+        google.maps.event.addListener(map, "click", function(event) {
+        var lat = event.latLng.lat();
+        var lng = event.latLng.lng();
+        // populate yor box/field with lat, lng
+
+        new google.maps.Marker({
+            position: new google.maps.LatLng(lat, lng, true),
+            map: map,
+            title: 'Click to zoom'
+        });
+
+        allPositions[cnt] = {lat : lat, lng: lng} ;
+        cnt++;
+        });
+        
+        google.maps.event.addListener(map, "rightclick", function(event) {
+            var x = '';
+
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = x;
+
+            var hiddenField0 = document.createElement("input");
+            hiddenField0.setAttribute("type", "hidden");
+            hiddenField0.setAttribute("name", "count");
+            hiddenField0.setAttribute("value", cnt);
+            form.appendChild(hiddenField0);
+
+            for(var c = 0; c < cnt; c++) {
+
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", 'lat'+c);
+                hiddenField.setAttribute("value", allPositions[c].lat);
+                form.appendChild(hiddenField);
+
+                var hiddenField1 = document.createElement("input");
+                hiddenField1.setAttribute("type", "hidden");
+                //var lng = 'lng' + c;
+                hiddenField1.setAttribute("name", 'lng'+c);
+                hiddenField1.setAttribute("value", allPositions[c].lng);
+                form.appendChild(hiddenField1);
+            };
+
+            form.submit();
+
+        });
+      };
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+  body
+    block content
+    #map-canvas
+    h2 Used : TripAdvisor API, Google API. Thank you so much!
+    p
